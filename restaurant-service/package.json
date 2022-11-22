@@ -1,13 +1,13 @@
 {
   "name": "restaurant-service",
   "version": "1.0.0",
-  "description": "A restaurant service for Burgernaut that consumes orders from the queue and updates the order status.",
+  "description": "A food service system that uses message queue to receive and update the order",
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
     "dev": "nodemon ./index.js"
   },
-  "author": "Dhanush Kamath",
+  "author": "Pratik Chavan",
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.6.0",

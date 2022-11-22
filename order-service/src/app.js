@@ -1,44 +1,35 @@
-const express = require('express');
-const morgan = require('morgan');
-const { addRoutes } = require('./routes/api');
-const { MORGAN_CONFIG } = require('./resources/constants');
-const { logger } = require('./services/loggerService');
-const { errorHandlerMiddleware } = require('./services/errorHandlingService');
-const { mongoConnect } = require('./services/mongoService');
+const express = require("express");
+const morgan = require("morgan");
+const { addRoutes } = require("./routes/api");
+const { MORGAN_CONFIG } = require("./resources/constants");
+const { logger } = require("./services/loggerService");
+const { errorHandlerMiddleware } = require("./services/errorHandlingService");
+const { mongoConnect } = require("./services/mongoService");
 const PORT = process.env.PORT || 3000;
-const { injectExchangeService, amqpConnect } = require('./services/mqService');
+const { injectExchangeService, amqpConnect } = require("./services/mqService");
 
 startServer = () => {
-    // mongo connection
-    mongoConnect();
+  mongoConnect();
 
-    // establish mq connection
-    amqpConnect();
-    
-    // create an express app
-    const app = express();
+  amqpConnect();
 
-    // middleware to add basic logging
-    app.use(morgan(MORGAN_CONFIG, { stream: logger.stream }));
+  const app = express();
 
-    // middleware to parse request
-    app.use(express.json());
+  app.use(morgan(MORGAN_CONFIG, { stream: logger.stream }));
 
-    // middleware to inject message-queue services
-    app.use(injectExchangeService);
+  app.use(express.json());
 
-    // add all routes
-    addRoutes(app);
+  app.use(injectExchangeService);
 
-    // error handling
-    app.use(errorHandlerMiddleware)
+  addRoutes(app);
 
+  app.use(errorHandlerMiddleware);
 
-    app.listen(PORT, () => {
-        logger.info(`order-service listening on port ${PORT}`);
-    })
-}
+  app.listen(PORT, () => {
+    logger.info(`order-service listening on port ${PORT}`);
+  });
+};
 
 module.exports = {
-    startServer: startServer
-}
+  startServer: startServer,
+};

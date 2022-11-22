@@ -1,11 +1,9 @@
-const { amqpConnectAndConsume} = require('./services/mqService')
+const { amqpConnectAndConsume } = require("./services/mqService");
 
 const startServer = () => {
-    // Connect to RabbitMQ and consume orders
-    amqpConnectAndConsume();
-}
+  amqpConnectAndConsume();
+};
 
 module.exports = {
-    startServer: startServer
-}
-
+  startServer: startServer,
+};
